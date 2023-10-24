@@ -1,0 +1,9 @@
+sequenceDiagram
+    actor P as Player
+    participant F as Frontend
+    participant C as Contract
+    
+    F->>+ C: Setup Contract
+    F->>+ P: Give Prompt
+    P->>+C: Claim Tile
+    C->>+F: Update Canvas Display
