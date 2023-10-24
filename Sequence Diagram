@@ -1,9 +1,22 @@
 sequenceDiagram
+    %%Define Actors
     actor P as Player
     participant F as Frontend
     participant C as Contract
+    participant A as CLIP AI
     
     F->>+ C: Setup Contract
     F->>+ P: Give Prompt
+    
+    loop
     P->>+C: Claim Tile
     C->>+F: Update Canvas Display
+    end
+
+    %%post Canvas Actions
+    note over P,A: Canvas Time Ends
+
+    F ->>+A: Send Image
+    A->>+C: Give Judgement
+
+    C-->>+P: Give Rewards
