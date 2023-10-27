@@ -1,7 +1,7 @@
 # F23_BlockPlace
 
 
-BlockPlace was inspired by r/Place,  a subreddit where people could work together to color in a blank canvas one pixel at a time to create art. 
+BlockPlace is an application inspired by r/Place, a subreddit where people could work together to color in a blank canvas one pixel at a time to create art. 
 
 Block Place aims to gameify using Blockchain technology and AI to reward users for creating well-made pixel art.
 
