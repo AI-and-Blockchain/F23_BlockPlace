@@ -32,8 +32,8 @@ We use blockchain to assist the system in verifying the correct users to reward 
 
 
 ## Sequence Diagram
-![image](https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/3ab99bf0-4522-4dcf-935b-e024c3943683)
 
+<img src="https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/3ab99bf0-4522-4dcf-935b-e024c3943683" width="500" height="500">
 
 
 
