@@ -9,7 +9,7 @@ We issue a prompt that users aim to make pixel art out of (Example: Dogs), and u
 
 
 
-##Tech Stack
+## Tech Stack
 
 We implement the Smart contracts using Solidity
 
