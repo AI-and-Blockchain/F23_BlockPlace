@@ -9,6 +9,8 @@ We issue a prompt that users aim to make pixel art out of (Example: Dogs), and u
 
 
 
+<img src="https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/fc5757b8-6768-4357-934a-16afc6c65a45" width="500" height="500">
+
 ## Tech Stack
 
 We implement the Smart contracts using Solidity
