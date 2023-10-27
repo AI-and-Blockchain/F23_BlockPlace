@@ -23,4 +23,12 @@ The smart contract create a decentralized bidding system where people can bid on
 We use blockchain to assist the system in verifying the correct users to reward at the end of a game cycle.
 
 
+## Sequence Diagram
+![image](https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/3ab99bf0-4522-4dcf-935b-e024c3943683)
+
+
+
+
+
+## Netowrk Architecture
 
