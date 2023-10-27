@@ -1,5 +1,10 @@
 # F23_BlockPlace
 
+## Team
+
+Shane Stoll, Tripp Lyons, Aarnav Patel, Yuk Ting Kong
+
+## Background
 
 BlockPlace is an application inspired by r/Place, a subreddit where people could work together to color in a blank canvas one pixel at a time to create art. 
 
