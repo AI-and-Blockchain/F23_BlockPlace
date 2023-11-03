@@ -44,4 +44,7 @@ We use blockchain to assist the system in verifying the correct users to reward 
 
 
 ## Network Architecture
+<img src="https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/547ca8af-2cca-455b-ae40-26cfd0ef284f" width="750" height="500">
+
+
 
