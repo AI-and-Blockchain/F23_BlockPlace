@@ -1,5 +1,3 @@
-## Foundry
-
 Backend will be a centralized server to ensure smooth operation between the blockchain & frontend as well as carry out the end-of-canvas tasks and judgement.
 
 Backend Installations
