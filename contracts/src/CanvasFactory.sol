@@ -28,8 +28,8 @@ contract CanvasFactory is Ownable {
         canvases[address(canvas)] = true;
     }
 
-    function end(bool usersGetRewarded) public onlyOwner {
-        canvas.end(usersGetRewarded);
+    function end() public onlyOwner {
+        canvas.end();
     }
 
     function newCanvas() public onlyOwner {

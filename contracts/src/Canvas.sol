@@ -21,7 +21,6 @@ contract Canvas is Ownable {
     Pixel[56][56] public pixels;
     bool public ended;
     mapping(address => bool) public claimedRewards;
-    bool public usersGetRewarded;
 
     address public chainlinkToken;
     address public chainlinkOracle;
@@ -52,11 +51,10 @@ contract Canvas is Ownable {
         pixels[x][y].b = b;
     }
 
-    function end(bool _usersGetRewarded) public onlyOwner {
+    function end() public onlyOwner {
         require(!ended, "Canvas is already ended");
 
         ended = true;
-        usersGetRewarded = _usersGetRewarded;
 
         payable(owner()).transfer(address(this).balance);
 
@@ -68,7 +66,6 @@ contract Canvas is Ownable {
     function claimRewards() public {
         require(!claimedRewards[msg.sender], "Already claimed");
         require(ended, "Canvas is not ended");
-        require(usersGetRewarded, "Users don't get rewarded for this canvas");
         require(apiConsumer.score() >= minScore, "Score is too low");
 
         claimedRewards[msg.sender] = true;
