@@ -15,7 +15,7 @@ contract CanvasFactoryTest is Test {
 
     function setUp() public {
         vm.prank(owner);
-        factory = new CanvasFactory();
+        factory = new CanvasFactory(0, address(0), address(0));
 
         // give some gas funds to the addresses
         vm.deal(owner, 1e18);
