@@ -25,19 +25,21 @@ def cosine_similarity(image, text):
 # CPU
 # device = "cpu"
 # GPU or CPU
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
+clip_model, preprocess = clip.load("ViT-B/32", device=device)
 
 #print (clip.available_models() )
 
-clip_model, preprocess = clip.load("ViT-B/32", device=device)
 
 
 #Open & convert the image from a 56x56 image to a 224x224 image
 
 picture = Image.open("Cat Pixel Art Tail.png")
-#picture.show()
 picture = picture.resize((56*4,56*4),1)
-#picture.show()
 
 prompt = "Garfield"
-print("prompt:",prompt," \nScore:",cosine_similarity(picture, prompt))
+score = cosine_similarity(picture, prompt)
+print("prompt:",prompt," \nScore:",score )
+
+
