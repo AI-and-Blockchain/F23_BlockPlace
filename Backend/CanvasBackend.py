@@ -15,18 +15,11 @@ clip_model, preprocess = clip.load("ViT-B/32", device=device)
 
 # Function to create canvas
 def createCanvas():
-    
-    return
-
-# Function to load image created from Canvas
-def LoadImage(file):
-    
     return
 
 
 #Tasks to do at the end of a canvas game cycle
 def end():
-
     return
 
 #Determines if the score is above the treshhold
@@ -50,6 +43,7 @@ def cosine_similarity(image, text):
 
 #file_location = String of the path to the file
 #prompt = String containing the prompt
+#returns CLIP AI score of the image & Prompt
 def Judgement(file_location,prompt):
     #if image is not of correct format, return 0 (should never happen but just in case)
     if(not file_location.endswith(".png")):
@@ -58,6 +52,8 @@ def Judgement(file_location,prompt):
     picture = Image.open(file_location)
     picture = picture.resize((56*4,56*4),1)
 
-    score = cosine_similarity(picture, prompt)
-    print("prompt:",prompt," \nScore:",score[0])
+    score = cosine_similarity(picture, prompt).item()
+    print("prompt:",prompt," \nScore:",score)
+    return score
 
+print(Judgement("Cat Pixel Art Tail.png","Pixel cat"))
