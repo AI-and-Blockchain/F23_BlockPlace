@@ -12,3 +12,6 @@ docs/
 
 # Dotenv file
 .env
+
+#ignore pythonserver file
+pythonserver.cpython-310.pyc
