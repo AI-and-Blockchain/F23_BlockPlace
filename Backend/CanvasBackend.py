@@ -20,6 +20,7 @@ def createCanvas():
 
 #Tasks to do at the end of a canvas game cycle
 def end():
+    #get signal from frontend that time is up
     return
 
 #Determines if the score is above the treshhold
