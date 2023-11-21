@@ -53,7 +53,7 @@ function initBoard() {
         pixel.dataset.x = x;
         pixel.dataset.y = y;
         pixel.id = `pixel-${x}-${y}`;
-        pixel.addEventListener('mouseover', function(event) {
+        pixel.addEventListener('click', function(event) {
             showInfoBox(event, pixel);
         });
         board.appendChild(pixel);
@@ -72,13 +72,11 @@ function showInfoBox(event, pixel) {
   const y = pixel.dataset.y;
   // Now you have the x and y coordinates of the hovered pixel
   console.log(`Hovered over pixel at x: ${x}, y: ${y}`);
+
+  window.selectedPixel = pixel;
 }
 
-let selectedPixel = null;
-
-function onPixelClick(pixel) {
-    selectedPixel = pixel;
-}
+window.selectedPixel = null;
 
 function placeBid() {
   const colorCode = document.getElementById('colorCode').value; // Assume format "#RRGGBB"
@@ -88,8 +86,8 @@ function placeBid() {
   const g = parseInt(colorCode.slice(3, 5), 16);
   const b = parseInt(colorCode.slice(5, 7), 16);
 
-  const x = selectedPixel.dataset.x;
-  const y = selectedPixel.dataset.y;
+  const x = window.selectedPixel.dataset.x;
+  const y = window.selectedPixel.dataset.y;
   
   canvasContract.buyPixel(x, y, r, g, b, {
       value: ethers.utils.parseEther(bidAmount)
@@ -103,3 +101,14 @@ function placeBid() {
   });
 }
 
+window.placeBid = placeBid;
+
+setInterval(async () => {
+  const { chainId } = await provider.getNetwork()
+  if (chainId !== 11155111) {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0xAA36A7' }], // chainId must be in hexadecimal numbers
+    });
+  }
+}, 2000)
