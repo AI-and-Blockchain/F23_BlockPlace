@@ -10,9 +10,8 @@ body {
 .board {
   display: grid;
   grid-template-columns: repeat(56, 1fr);
-  grid-gap: 1px;
-  width: 560px;
-  margin: auto;
+  width: 672px;
+  margin: 0 auto;
 }
 
 .pixel {
