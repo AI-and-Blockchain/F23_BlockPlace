@@ -1,16 +1,20 @@
 const ethers = require('ethers');
 
-import canvasFactoryABI from "./ContractABI/CanvasFactoryABI.json"
-import canvasABI from "./ContractABI/CanvasABI.json"
-import blockPlaceTokenABI from "./ContractABI/BlockPlaceTokenABI.json"
+// import canvasFactoryABI from "./ContractABI/CanvasFactoryABI.json"
+// import canvasABI from "./ContractABI/CanvasABI.json"
+// import blockPlaceTokenABI from "./ContractABI/BlockPlaceTokenABI.json"
+
+const canvasFactoryABI = require('./ContractABI/CanvasFactoryABI.json');
+const canvasABI = require('./ContractABI/CanvasABI.json');
+const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 
 const blockPlaceTokenAddress = '0x15d76B1642414EC8296d2e59F6373eedCc3F352B'; // Deployed address
 const canvasAddress = '0xdf67e63aE392be275D1Ad1A6bdeF9e08423241A1';
 const canvasFactoryAddress = '0x57eea7f1cef7baba71362a78d8425c81f03aa535';
 
-const blockPlaceTokenContract = new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
-const canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
-const canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
+let blockPlaceTokenContract; // new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
+let canvasContract; // new ethers.Contract(canvasAddress, canvasABI, signer);
+let canvasFactoryContract; // new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
 
 let provider;
 let signer;
@@ -34,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initBoard() {
+  blockPlaceTokenContract = new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
+  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+  canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
+
+
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
 
