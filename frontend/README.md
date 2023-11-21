@@ -2,6 +2,8 @@
 
 ## Usage
 
+All commands are run from the `frontend` directory.
+
 ### Setup
 
 ```bash
