@@ -59,6 +59,20 @@ function initBoard() {
       board.appendChild(pixel);
     }
   }
+
+  document.querySelector('#bidAmount').addEventListener('input', function(event) {
+    const bidAmount = event.target.value;
+    // can't be empty
+    if (bidAmount === '') {
+      event.target.value = 0;
+      return;
+    }
+    // can't be negative
+    if (parseFloat(bidAmount) < 0) {
+      event.target.value = 0;
+      return;
+    }
+  });
 }
 
 
@@ -87,6 +101,13 @@ function placeBid() {
     return;
   }
 
+  let value = ethers.utils.parseEther(bidAmount);
+  if (value.toString() === '0') {
+    alert('Bid amount must be greater than 0');
+    return;
+  }
+
+
   const r = parseInt(colorCode.slice(1, 3), 16);
   const g = parseInt(colorCode.slice(3, 5), 16);
   const b = parseInt(colorCode.slice(5, 7), 16);
@@ -95,7 +116,7 @@ function placeBid() {
   const y = window.selectedPixel.dataset.y;
   
   canvasContract.buyPixel(x, y, r, g, b, {
-    value: ethers.utils.parseEther(bidAmount)
+    value: value
   }).then((tx) => {
     console.log('Transaction sent', tx);
     return tx.wait();
