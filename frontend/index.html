@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlockPlace</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  </head>
+  <body>
     <div class="header">
-        <h1>BlockPlace</h1>
+      <h1>BlockPlace</h1>
     </div>
     <div class="board">
-        <!-- JavaScript will populate this with pixels -->
+      <!-- JavaScript will populate this with pixels -->
     </div>
     <div class="info-box" id="infoBox" style="display:none;">
-        <label for="colorCode">Color Code</label>
-        <input type="color" id="colorCode" value="#808080">
-        <label for="bidAmount">Bid Amount (in ETH)</label>
-        <input type="number" min="0" id="bidAmount" placeholder="Bid Amount">
-        <button onclick="window.placeBid()">Place Bid</button>
+      <label for="colorCode">Color Code</label>
+      <input type="color" id="colorCode" value="#808080">
+      <label for="bidAmount">Bid Amount (in ETH)</label>
+      <input type="number" min="0" id="bidAmount" placeholder="Bid Amount">
+      <button onclick="window.placeBid()">Place Bid</button>
     </div>
     <script type="module" src="script.js"></script>
-</body>
+  </body>
 </html>

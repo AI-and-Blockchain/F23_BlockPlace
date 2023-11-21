@@ -1,9 +1,5 @@
 const ethers = require('ethers');
 
-// import canvasFactoryABI from "./ContractABI/CanvasFactoryABI.json"
-// import canvasABI from "./ContractABI/CanvasABI.json"
-// import blockPlaceTokenABI from "./ContractABI/BlockPlaceTokenABI.json"
-
 const canvasFactoryABI = require('./ContractABI/CanvasFactoryABI.json');
 const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
@@ -12,9 +8,9 @@ const blockPlaceTokenAddress = '0x15d76B1642414EC8296d2e59F6373eedCc3F352B'; // 
 const canvasAddress = '0xdf67e63aE392be275D1Ad1A6bdeF9e08423241A1';
 const canvasFactoryAddress = '0x57eea7f1cef7baba71362a78d8425c81f03aa535';
 
-let blockPlaceTokenContract; // new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
-let canvasContract; // new ethers.Contract(canvasAddress, canvasABI, signer);
-let canvasFactoryContract; // new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
+let blockPlaceTokenContract;
+let canvasContract;
+let canvasFactoryContract;
 
 let provider;
 let signer;
@@ -75,6 +71,7 @@ function initBoard() {
   });
 }
 
+window.selectedPixel = null;
 
 function showInfoBox(event, pixel) {
   const infoBox = document.getElementById('infoBox');
@@ -90,8 +87,6 @@ function showInfoBox(event, pixel) {
   window.selectedPixel = pixel;
 }
 
-window.selectedPixel = null;
-
 function placeBid() {
   const colorCode = document.getElementById('colorCode').value; // Assume format "#RRGGBB"
   const bidAmount = document.getElementById('bidAmount').value; // In ETH
@@ -106,7 +101,6 @@ function placeBid() {
     alert('Bid amount must be greater than 0');
     return;
   }
-
 
   const r = parseInt(colorCode.slice(1, 3), 16);
   const g = parseInt(colorCode.slice(3, 5), 16);
