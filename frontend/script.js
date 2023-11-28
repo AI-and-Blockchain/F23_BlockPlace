@@ -16,6 +16,7 @@ let provider;
 let signer;
 
 document.addEventListener('DOMContentLoaded', function() {
+  startTimer();
   if (typeof window.ethereum !== 'undefined') {
     provider = new ethers.providers.Web3Provider(window.ethereum);
     // Prompt user for account connections
@@ -38,7 +39,6 @@ function initBoard() {
   canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
   canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
 
-
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
 
@@ -55,7 +55,6 @@ function initBoard() {
       board.appendChild(pixel);
     }
   }
-
   document.querySelector('#bidAmount').addEventListener('input', function(event) {
     const bidAmount = event.target.value;
     // can't be empty
@@ -69,6 +68,8 @@ function initBoard() {
       return;
     }
   });
+
+
 }
 
 window.selectedPixel = null;
@@ -120,6 +121,28 @@ function placeBid() {
     console.error('Error placing bid:', error);
   });
 }
+
+let timerDuration = 15*60;
+let timerInterval;
+function startTimer() {
+  timerInterval = setInterval(() => {
+    let minutes = Math.floor(timerDuration / 60);
+    let seconds = timerDuration % 60;
+
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+
+    if (timerDuration <= 0) {
+      console.log(`Timer Duration: ${timerDuration}`);
+      clearInterval(timerInterval);
+      //sendBoardData();
+    }
+    timerDuration--;
+  }, 1000);
+}
+
 
 window.placeBid = placeBid;
 

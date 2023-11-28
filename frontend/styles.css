@@ -4,8 +4,17 @@ body {
 }
 
 .header {
+  text-align: center;
   margin-bottom: 20px;
 }
+
+#timer {
+  font-size: 20px;
+  color: #333;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
 
 .board {
   display: grid;
