@@ -1,5 +1,7 @@
 const ethers = require('ethers');
 
+const SIZE = 56;
+
 const canvasFactoryABI = require('./ContractABI/CanvasFactoryABI.json');
 const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
@@ -42,8 +44,8 @@ function initBoard() {
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
 
-  for (let y = 0; y < 56; y++) {
-    for (let x = 0; x < 56; x++) {
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
       const pixel = document.createElement('div');
       pixel.classList.add('pixel');
       pixel.dataset.x = x;
@@ -155,3 +157,49 @@ setInterval(async () => {
     });
   }
 }, 2000)
+
+let nextUpdateX = 0;
+let nextUpdateY = 0;
+
+let firstErrorX = -1;
+let firstErrorY = -1;
+
+// scan through each pixel and update them one at a time
+setInterval(() => {
+  (async () => {
+    const currentUpdateX = nextUpdateX;
+    const currentUpdateY = nextUpdateY;
+
+    try {
+      let pixel = await canvasContract.pixels(currentUpdateX, currentUpdateY);
+
+      let div = document.getElementById(`pixel-${currentUpdateX}-${currentUpdateY}`);
+      div.style.backgroundColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+    } catch (error) {
+      console.error('Error getting pixel:', error);
+      if (firstErrorX === -1) {
+        firstErrorX = currentUpdateX;
+        firstErrorY = currentUpdateY;
+      }
+    }
+  })()
+  
+  // go to the next pixel if it is connected
+  
+  nextUpdateX++;
+  if (nextUpdateX >= SIZE) {
+    nextUpdateX = 0;
+    nextUpdateY++;
+    if (nextUpdateY >= SIZE) {
+      nextUpdateY = 0;
+    }
+  }
+
+  // go back to the first error pixel if there is one
+  if (firstErrorX !== -1) {
+    nextUpdateX = firstErrorX;
+    nextUpdateY = firstErrorY;
+    firstErrorX = -1;
+    firstErrorY = -1;
+  }
+}, 5)
