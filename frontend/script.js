@@ -5,6 +5,7 @@ const SIZE = 56;
 const canvasFactoryABI = require('./ContractABI/CanvasFactoryABI.json');
 const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
+const { info } = require('ethers/errors');
 
 const blockPlaceTokenAddress = '0x15d76B1642414EC8296d2e59F6373eedCc3F352B'; // Deployed address
 const canvasAddress = '0xdf67e63aE392be275D1Ad1A6bdeF9e08423241A1';
@@ -70,8 +71,6 @@ function initBoard() {
       return;
     }
   });
-
-
 }
 
 window.selectedPixel = null;
@@ -88,6 +87,21 @@ function showInfoBox(event, pixel) {
   console.log(`Hovered over pixel at x: ${x}, y: ${y}`);
 
   window.selectedPixel = pixel;
+
+  (async () => {
+    let infoText = infoBox.querySelector('#infoText');
+
+    console.log(infoText);
+
+    let pixel = await canvasContract.pixels(x, y);
+    let currentOwner = pixel[3];
+    let currentBid = pixel[4];
+    let currentOwnerString = currentOwner.toString();
+    let currentBidString = ethers.utils.formatEther(currentBid);
+    console.log(currentOwnerString, currentBidString);
+
+    infoText.innerHTML = `Current Owner: ${currentOwnerString}<br>Current Bid: ${currentBidString} ETH`;
+  })()
 }
 
 function placeBid() {
@@ -126,6 +140,7 @@ function placeBid() {
 
 let timerDuration = 15*60;
 let timerInterval;
+
 function startTimer() {
   timerInterval = setInterval(() => {
     let minutes = Math.floor(timerDuration / 60);
@@ -156,7 +171,7 @@ setInterval(async () => {
       params: [{ chainId: '0xAA36A7' }], // chainId must be in hexadecimal numbers
     });
   }
-}, 2000)
+}, 2000);
 
 let nextUpdateX = 0;
 let nextUpdateY = 0;
@@ -202,7 +217,7 @@ setInterval(() => {
     firstErrorX = -1;
     firstErrorY = -1;
   }
-}, 5)
+}, 5);
 
 window.claimRewards = async () => {
   if(!(await canvasContract.ended())) {
@@ -216,4 +231,4 @@ window.claimRewards = async () => {
   } catch (error) {
     console.error('Error claiming rewards:', error);
   }
-}
+};
