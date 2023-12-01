@@ -203,3 +203,17 @@ setInterval(() => {
     firstErrorY = -1;
   }
 }, 5)
+
+window.claimRewards = async () => {
+  if(!(await canvasContract.ended())) {
+    alert('The canvas has not ended yet');
+    return;
+  }
+
+  try {
+    let tx = await canvasContract.claimRewards();
+    console.log('Transaction sent', tx);
+  } catch (error) {
+    console.error('Error claiming rewards:', error);
+  }
+}
