@@ -13,6 +13,7 @@ const canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB';
 
 let canvasContract;
 let canvasFactoryContract;
+let previousCanvasContract;
 
 let provider;
 let signer;
@@ -143,6 +144,16 @@ function placeBid() {
 let timerDuration = 15*60;
 let timerInterval;
 
+function endOfTimer() {
+  setTimeout(async () => {
+    previousCanvasContract = canvasContract;
+
+    // update the current canvas
+    const canvasAddress = await canvasFactoryContract.canvas();
+    canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+  }, 5000)
+}
+
 function startTimer() {
   timerInterval = setInterval(() => {
     let minutes = Math.floor(timerDuration / 60);
@@ -155,8 +166,9 @@ function startTimer() {
 
     if (timerDuration <= 0) {
       console.log(`Timer Duration: ${timerDuration}`);
-      clearInterval(timerInterval);
+      // clearInterval(timerInterval);
       //sendBoardData();
+      endOfTimer();
     }
     timerDuration--;
   }, 1000);
@@ -244,13 +256,13 @@ setInterval(() => {
 }, 5);
 
 window.claimRewards = async () => {
-  if(!(await canvasContract.ended())) {
-    alert('The canvas has not ended yet');
-    return;
+  if(previousCanvasContract == null){
+    alert('No rewards to claim')
+    return
   }
 
   try {
-    let tx = await canvasContract.claimRewards();
+    let tx = await previousCanvasContract.claimRewards();
     console.log('Transaction sent', tx);
   } catch (error) {
     console.error('Error claiming rewards:', error);
