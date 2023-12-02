@@ -87,6 +87,7 @@ def sendScore():
 
 @app.route("/time", methods=["GET"])
 def gettime():
+    global secondsLeft
     obj = {
         "time": secondsLeft
     }
@@ -150,6 +151,7 @@ def loadImage():
     generateImage(canvasAddress)
 
 def countdown():
+    global secondsLeft
     secondsLeft -= 1
     if secondsLeft <= 0:
         end()
