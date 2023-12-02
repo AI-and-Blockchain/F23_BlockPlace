@@ -15,14 +15,13 @@ from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 web3 = Web3(Web3.HTTPProvider(load_canvas.RPC_URL))
 
-app = Flask(__name__)
-
 imageLocation = 'CanvasResult.png'
-acceptence_threshold = .5 
+acceptence_threshold = .3
 
 with open("ContractABI/CanvasFactoryABI.json") as f:
     CANVAS_FACTORY_ABI = json.load(f)
@@ -39,7 +38,7 @@ canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
 prompts = ["Car","House","Sun","Moon","Boat","Chair","Book","Flower",
            "Robot","Bicycle","Fish","Tree","Apple","Mountain",
            "Clock","Bird","Star","Plane","Cupcake","Hat","Umbrella",
-           "Pizza","Rocket","Whale","Rainbow","Camera"]
+           "Pizza","Rocket","Whale","Rainbow","Camera","Cat"]
 
 prompt = random.choice(prompts)
 
@@ -60,7 +59,15 @@ def generateImage(canvasAddress):
 @app.route('/prompt', methods=['GET'])
 def sendPrompt():
     global prompt
+    print("Sending Prompt")
     return json.dumps({"prompt": prompt})
+
+#flask http request to send updatedCanvasAddress the prompt
+@app.route('/Canvas', methods=['GET'])
+def sendCanvas():
+    global canvasAddress
+    print("Sending Updated Canvas Address")
+    return json.dumps({"CanvasAddress": canvasAddress})
 
 #send the score to chainlink
 @app.route("/score", methods=["GET"])
@@ -73,18 +80,27 @@ def sendScore():
         "score": score
     })
 
+#API from frontend to end the current Canvas
+@app.route("/time", methods=["POST"])
+def TimerEnded():
+    global canvasAddress
+    end(canvasAddress)
+
 #Tasks to do at the end of a canvas game cycle
 def end(canvasAddress):
     global prompt
     global prompts
     global canvasFactoryAddress
 
+
     generateImage(canvasAddress)
     sendScore()
     
+    #createCanvas()
+    #sendCanvas()
+    
     newPrompt = random.choice(prompts)
     sendPrompt(newPrompt)    
-    createCanvas()
     prompt = newPrompt
 
 #start a new Canvas contract
@@ -93,7 +109,8 @@ def createCanvas():
     global canvasAddress
     global canvasContract
 
-    canvasFactoryContract.functions.newCanvas()
+    canvasAddress = canvasFactoryContract.functions.end().call()
+    canvasFactoryContract.functions.newCanvas().call()
     canvasAddress = canvasFactoryContract.functions.canvas().call()
     canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
 
@@ -132,9 +149,10 @@ if __name__ == "CanvasBackend":
     print("Starting Canvas Backend")
 
     scheduler = APScheduler()
-    scheduler.add_job(id = 'Scheduled Task', func=loadImage, trigger="interval", seconds=120)
+    #scheduler.add_job(id = 'Scheduled Task', func=loadImage, trigger="interval", seconds=120)
     scheduler.start()
 
     #loadImage()
+    sendPrompt()
 
-    app.run(debug = True)
+    app.run(debug = True)   

@@ -161,6 +161,25 @@ function startTimer() {
   }, 1000);
 }
 
+function endGame(canvasAddr){
+  const url = 'http://127.0.0.1:5000/time'
+  const payload = {
+    canvasAddress: canvasAddress
+  };
+  fetch(url,{
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body:JSON.stringify(payload)
+  })
+  .then(response => response.json())
+  .then(data => {
+    
+  })
+
+}
+
 // Function to fetch and update the prompt
 async function updatePrompt() {
   try {
