@@ -7,9 +7,8 @@ const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 const { info } = require('ethers/errors');
 
-const canvasAddress = '0x2Ff2b850413A7bbcAa757785BC5f457162a3A7bE';
+const canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB';
 
-let blockPlaceTokenContract;
 let canvasContract;
 let canvasFactoryContract;
 
@@ -36,10 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function initBoard() {
-  blockPlaceTokenContract = new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
-  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+async function initBoard() {
   canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
+
+  const canvasAddress = await canvasFactoryContract.canvas();
+
+  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
 
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
