@@ -124,7 +124,9 @@ def createCanvas():
     global canvasAddress
     global canvasContract
 
-    canvasFactoryContract.functions.newCanvas(signer).transact()
+    canvasFactoryContract.functions.newCanvas().transact({
+        'from': signer.address,
+    })
     time.sleep(30)
     
     canvasAddress = canvasFactoryContract.functions.canvas().call()
