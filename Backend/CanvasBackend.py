@@ -30,7 +30,7 @@ with open("ContractABI/CanvasFactoryABI.json") as f:
 with open("ContractABI/CanvasABI.json") as f:
     CANVAS_ABI = json.load(f)
 
-canvasFactoryAddress = '0x65a2d0e643811827d400ffc950b227066433c171'
+canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB'
 canvasFactoryContract = web3.eth.contract(address=canvasFactoryAddress, abi=CANVAS_FACTORY_ABI)
 canvasAddress = canvasFactoryContract.functions.canvas().call()
 canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)

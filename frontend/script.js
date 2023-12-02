@@ -7,9 +7,7 @@ const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 const { info } = require('ethers/errors');
 
-const blockPlaceTokenAddress = '0x4Eb0C43680d9F80E5500C937B6bCe327F72A6485'; // Deployed address
-const canvasAddress = '0x316F6aB7A740C30f7AedB09C317121a09E26Dd46';
-const canvasFactoryAddress = '0x65a2d0e643811827d400ffc950b227066433c171';
+const canvasAddress = '0x2Ff2b850413A7bbcAa757785BC5f457162a3A7bE';
 
 let blockPlaceTokenContract;
 let canvasContract;
@@ -243,5 +241,8 @@ window.claimRewards = async () => {
     console.log('Transaction sent', tx);
   } catch (error) {
     console.error('Error claiming rewards:', error);
+    if (error.message.includes('too low')) {
+      alert('Your score is too low to claim rewards');
+    }
   }
 };
