@@ -124,12 +124,12 @@ def createCanvas():
     global canvasAddress
     global canvasContract
 
-    tx = canvasFactoryContract.functions.end().trasact({
+    tx = canvasFactoryContract.functions.end().transact({
         'from': signer.address
     })
     web3.eth.send_transaction(tx)
     time.sleep(5)
-    tx = canvasFactoryContract.functions.newCanvas().trasact({
+    tx = canvasFactoryContract.functions.newCanvas().transact({
         'from': signer.address
     })
     web3.eth.send_transaction(tx)
