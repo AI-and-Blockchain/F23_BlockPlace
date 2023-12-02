@@ -12,6 +12,10 @@ import load_canvas
 import random 
 from flask import Flask, jsonify, request, render_template
 from flask_apscheduler import APScheduler
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
 
 web3 = Web3(Web3.HTTPProvider(load_canvas.RPC_URL))
 
@@ -53,10 +57,10 @@ def generateImage(canvasAddress):
     print("image", img)
 
 #flask http request to send frontend the prompt
-@app.route("/prompt", methods=["GET"])
+@app.route('/prompt', methods=['GET'])
 def sendPrompt():
     global prompt
-    return prompt
+    return json.dumps({"prompt": prompt})
 
 #send the score to chainlink
 @app.route("/score", methods=["GET"])
@@ -123,13 +127,6 @@ def Judgement(file_location,prompt):
 def loadImage():
     generateImage(canvasAddress)
 
-
-
-#Test Post Command
-
-
-
-
 #Flask Server
 if __name__ == "CanvasBackend":
     print("Starting Canvas Backend")
@@ -140,4 +137,4 @@ if __name__ == "CanvasBackend":
 
     #loadImage()
 
-    app.run(host="0.0.0.0")
+    app.run(debug = True)

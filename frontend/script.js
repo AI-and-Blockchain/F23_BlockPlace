@@ -20,6 +20,7 @@ let signer;
 
 document.addEventListener('DOMContentLoaded', function() {
   startTimer();
+  updatePrompt();
   if (typeof window.ethereum !== 'undefined') {
     provider = new ethers.providers.Web3Provider(window.ethereum);
     // Prompt user for account connections
@@ -158,6 +159,18 @@ function startTimer() {
     }
     timerDuration--;
   }, 1000);
+}
+
+// Function to fetch and update the prompt
+async function updatePrompt() {
+  try {
+    const response = await fetch('http://127.0.0.1:5000/prompt');
+    const data = await response.json();
+    console.log('data:', data);
+    document.getElementById('prompt').textContent =  `Prompt: ${data.prompt}`;
+  } catch (error) {
+    console.error('Error fetching prompt:', error);
+  }
 }
 
 
