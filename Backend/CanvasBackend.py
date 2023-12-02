@@ -62,6 +62,8 @@ def sendPrompt():
 @app.route("/score", methods=["GET"])
 def sendScore():
     global prompt
+    global imageLocation
+
     score = Judgement(imageLocation, prompt)
     return json.dumps({
         "score": score
@@ -70,12 +72,10 @@ def sendScore():
 #Tasks to do at the end of a canvas game cycle
 def end(canvasAddress):
     global prompt
+    global prompts
     global canvasFactoryAddress
 
-    #get details from the contract
     generateImage(canvasAddress)
-    
-    #send score to server
     sendScore()
     
     newPrompt = random.choice(prompts)
@@ -123,6 +123,14 @@ def Judgement(file_location,prompt):
 def loadImage():
     generateImage(canvasAddress)
 
+
+
+#Test Post Command
+
+
+
+
+#Flask Server
 if __name__ == "CanvasBackend":
     print("Starting Canvas Backend")
 
