@@ -13,12 +13,19 @@ import random
 from flask import Flask, jsonify, request, render_template, make_response
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
+from web3.middleware import construct_sign_and_send_raw_middleware
+
+load_dotenv()
+
+private_key = os.getenv("PRIVKEY")
 
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 web3 = Web3(Web3.HTTPProvider(load_canvas.RPC_URL))
+signer = web3.eth.account.from_key(private_key)
+web3.middleware_onion.add(construct_sign_and_send_raw_middleware(signer))
 
 imageLocation = 'CanvasResult.png'
 acceptence_threshold = .3
@@ -109,14 +116,25 @@ def end():
     prompt = random.choice(prompts)
     secondsLeft = baseTimer
 
+import time
+
 #start a new Canvas contract
 def createCanvas():
     global canvasFactoryContract
     global canvasAddress
     global canvasContract
 
-    canvasFactoryContract.functions.end().call()
-    canvasFactoryContract.functions.newCanvas().call()
+    tx = canvasFactoryContract.functions.end().trasact({
+        'from': signer.address
+    })
+    web3.eth.send_transaction(tx)
+    time.sleep(5)
+    tx = canvasFactoryContract.functions.newCanvas().trasact({
+        'from': signer.address
+    })
+    web3.eth.send_transaction(tx)
+    time.sleep(30)
+    
     canvasAddress = canvasFactoryContract.functions.canvas().call()
     canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
 
