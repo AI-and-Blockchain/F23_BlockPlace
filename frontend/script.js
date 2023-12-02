@@ -10,6 +10,7 @@ const { info } = require('ethers/errors');
 const backendAddress = 'http://143.198.233.181'
 
 const canvasFactoryAddress = '0x33401ceB7464615F44bc8E763484897009f8CfB7';
+let canvasAddress;
 
 let canvasContract;
 let canvasFactoryContract;
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initBoard() {
   canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
 
-  const canvasAddress = await canvasFactoryContract.canvas();
+  canvasAddress = await canvasFactoryContract.canvas();
 
   canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
 
@@ -146,10 +147,10 @@ let timerInterval;
 
 function endOfTimer() {
   setTimeout(async () => {
-    previousCanvasContract = canvasContract;
+    previousCanvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
 
     // update the current canvas
-    const canvasAddress = await canvasFactoryContract.canvas();
+    canvasAddress = await canvasFactoryContract.canvas();
     canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
   }, 5000)
 }
