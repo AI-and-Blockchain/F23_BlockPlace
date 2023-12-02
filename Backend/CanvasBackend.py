@@ -85,7 +85,7 @@ def sendScore():
     response.content_type = 'application/json'
     return response
 
-@app.route("/time", methods=["get"])
+@app.route("/time", methods=["GET"])
 def gettime():
     obj = {
         "time": secondsLeft
