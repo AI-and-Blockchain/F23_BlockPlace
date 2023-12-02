@@ -45,6 +45,6 @@ We use blockchain to assist the system in verifying the correct users to reward 
 
 ## Contract Addresses
 
-- CanvasFactory: 0x72569bdAcC7B9FDd5E95D662609Ee380752A4659
-- Canvas: 0xD93Fac334aeC56171a478EFe6DB5E4bcAE3887A7
-- BlockPlaceToken: 0x3dc8dAcdCa7f171B139C455E8eF41CC52C2cfC9d
+- CanvasFactory: 0x65a2d0e643811827d400ffc950b227066433c171
+- Canvas: 0x316F6aB7A740C30f7AedB09C317121a09E26Dd46
+- BlockPlaceToken: 0x4Eb0C43680d9F80E5500C937B6bCe327F72A6485

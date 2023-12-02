@@ -47,7 +47,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         // Set the URL to perform the GET request on
         req.add(
             "get",
-            "http://146.190.118.103/score"
+            "http://143.198.233.181/score"
         );
 
         // Set the path to find the desired data in the API response, where the response format is:

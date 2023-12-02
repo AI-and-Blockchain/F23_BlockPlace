@@ -7,9 +7,9 @@ const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 const { info } = require('ethers/errors');
 
-const blockPlaceTokenAddress = '0x3dc8dAcdCa7f171B139C455E8eF41CC52C2cfC9d'; // Deployed address
-const canvasAddress = '0xD93Fac334aeC56171a478EFe6DB5E4bcAE3887A7';
-const canvasFactoryAddress = '0x72569bdAcC7B9FDd5E95D662609Ee380752A4659';
+const blockPlaceTokenAddress = '0x4Eb0C43680d9F80E5500C937B6bCe327F72A6485'; // Deployed address
+const canvasAddress = '0x316F6aB7A740C30f7AedB09C317121a09E26Dd46';
+const canvasFactoryAddress = '0x65a2d0e643811827d400ffc950b227066433c171';
 
 let blockPlaceTokenContract;
 let canvasContract;
