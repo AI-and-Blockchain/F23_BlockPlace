@@ -9,10 +9,9 @@ const { info } = require('ethers/errors');
 
 const backendAddress = 'http://143.198.233.181'
 
-const canvasFactoryAddress = '0x33401ceB7464615F44bc8E763484897009f8CfB7';
+const canvasFactoryAddress = '0x7cf527c4B4B6e3117795bf632C3D00013E0F3f0B';
 let canvasAddress;
 
-let canvasContract;
 let canvasFactoryContract;
 let previousCanvasContract;
 
@@ -44,7 +43,7 @@ async function initBoard() {
 
   canvasAddress = await canvasFactoryContract.canvas();
 
-  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+  window.canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
 
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
@@ -97,7 +96,7 @@ function showInfoBox(event, pixel) {
 
     console.log(infoText);
 
-    let pixel = await canvasContract.pixels(x, y);
+    let pixel = await window.canvasContract.pixels(x, y);
     let currentOwner = pixel[3];
     let currentBid = pixel[4];
     let currentOwnerString = currentOwner.toString();
@@ -130,7 +129,7 @@ function placeBid() {
   const x = window.selectedPixel.dataset.x;
   const y = window.selectedPixel.dataset.y;
   
-  canvasContract.buyPixel(x, y, r, g, b, {
+  window.canvasContract.buyPixel(x, y, r, g, b, {
     value: value
   }).then((tx) => {
     console.log('Transaction sent', tx);
@@ -147,11 +146,13 @@ let timerInterval;
 
 function endOfTimer() {
   setTimeout(async () => {
-    previousCanvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
-
     // update the current canvas
-    canvasAddress = await canvasFactoryContract.canvas();
-    canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+    let newAddress = await canvasFactoryContract.canvas();
+    if (newAddress !== canvasAddress) {
+      previousCanvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+      canvasAddress = newAddress;
+      window.canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+    }
   }, 5000)
 }
 
@@ -223,7 +224,7 @@ setInterval(() => {
     const currentUpdateY = nextUpdateY;
 
     try {
-      let pixel = await canvasContract.pixels(currentUpdateX, currentUpdateY);
+      let pixel = await window.canvasContract.pixels(currentUpdateX, currentUpdateY);
 
       let div = document.getElementById(`pixel-${currentUpdateX}-${currentUpdateY}`);
       div.style.backgroundColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;

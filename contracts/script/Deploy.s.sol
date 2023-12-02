@@ -10,7 +10,7 @@ contract Deploy is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         CanvasFactory factory = new CanvasFactory(
-            3e17,
+            1e17,
             0x779877A7B0D9E8603169DdbD7836e478b4624789,
             0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD
         );
