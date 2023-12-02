@@ -7,11 +7,8 @@ const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 const { info } = require('ethers/errors');
 
-const blockPlaceTokenAddress = '0x15d76B1642414EC8296d2e59F6373eedCc3F352B'; // Deployed address
-const canvasAddress = '0xdf67e63aE392be275D1Ad1A6bdeF9e08423241A1';
-const canvasFactoryAddress = '0x57eea7f1cef7baba71362a78d8425c81f03aa535';
+const canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB';
 
-let blockPlaceTokenContract;
 let canvasContract;
 let canvasFactoryContract;
 
@@ -38,10 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function initBoard() {
-  blockPlaceTokenContract = new ethers.Contract(blockPlaceTokenAddress, blockPlaceTokenABI, signer);
-  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+async function initBoard() {
   canvasFactoryContract = new ethers.Contract(canvasFactoryAddress, canvasFactoryABI, signer);
+
+  const canvasAddress = await canvasFactoryContract.canvas();
+
+  canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
 
   const board = document.querySelector('.board');
   const infoBox = document.getElementById('infoBox');
@@ -175,9 +174,13 @@ function endGame(canvasAddr){
   })
   .then(response => response.json())
   .then(data => {
-    
+    if (data && data.score !== undefined) {
+      alert('Score: ' + data.score);
+    }
   })
-
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
 
 // Function to fetch and update the prompt
@@ -262,5 +265,8 @@ window.claimRewards = async () => {
     console.log('Transaction sent', tx);
   } catch (error) {
     console.error('Error claiming rewards:', error);
+    if (error.message.includes('too low')) {
+      alert('Your score is too low to claim rewards');
+    }
   }
 };

@@ -10,11 +10,18 @@ contract Deploy is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         CanvasFactory factory = new CanvasFactory(
-            1e18,
+            3e17,
             0x779877A7B0D9E8603169DdbD7836e478b4624789,
             0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD
         );
 
         vm.stopBroadcast();
+
+        address canvas = address(factory.canvas());
+        address token = address(factory.token());
+
+        console.log("CanvasFactory deployed at: %s", address(factory));
+        console.log("Canvas deployed at: %s", canvas);
+        console.log("Token deployed at: %s", token);
     }
 }

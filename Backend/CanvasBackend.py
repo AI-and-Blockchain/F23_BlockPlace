@@ -10,7 +10,7 @@ from PIL import Image
 import numpy as np
 import load_canvas
 import random 
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, make_response
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
@@ -29,7 +29,7 @@ with open("ContractABI/CanvasFactoryABI.json") as f:
 with open("ContractABI/CanvasABI.json") as f:
     CANVAS_ABI = json.load(f)
 
-canvasFactoryAddress = '0x57eEA7f1CEF7bABA71362A78d8425c81F03AA535'
+canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB'
 canvasFactoryContract = web3.eth.contract(address=canvasFactoryAddress, abi=CANVAS_FACTORY_ABI)
 canvasAddress = canvasFactoryContract.functions.canvas().call()
 canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
@@ -60,7 +60,12 @@ def generateImage(canvasAddress):
 def sendPrompt():
     global prompt
     print("Sending Prompt")
-    return json.dumps({"prompt": prompt})
+
+    obj = {"prompt": prompt}
+
+    response = make_response(json.dumps(obj))
+    response.content_type = 'application/json'
+    return response
 
 #flask http request to send updatedCanvasAddress the prompt
 @app.route('/Canvas', methods=['GET'])
@@ -76,9 +81,19 @@ def sendScore():
     global imageLocation
 
     score = Judgement(imageLocation, prompt)
-    return json.dumps({
+    obj = {
         "score": score
-    })
+    }
+
+    response = make_response(json.dumps(obj))
+    response.content_type = 'application/json'
+    return response
+
+#API from frontend to end the current Canvas
+@app.route("/time", methods=["POST"])
+def TimerEnded():
+    global canvasAddress
+    end(canvasAddress)
 
 #API from frontend to end the current Canvas
 @app.route("/time", methods=["POST"])
