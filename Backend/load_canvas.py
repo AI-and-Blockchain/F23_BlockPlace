@@ -1,12 +1,11 @@
 from eth_utils import address
 from web3 import Web3
 from multiprocessing import Pool
-
-RPC_URL = "https://1rpc.io/sepolia"
-
+# RPC_URL = "https://1rpc.io/sepolia"
+RPC_URL = "https://ethereum-sepolia.publicnode.com"
 web3 = Web3(Web3.HTTPProvider(RPC_URL))
-
 import json
+
 with open("canvasABI.json") as f:
     CANVAS_ABI = json.load(f)
 
@@ -15,11 +14,11 @@ def loadPixel(address, x, y):
 
     r, g, b, _, _ = contract.functions.pixels(x, y).call()
 
-    return (r,g,b)
+    return [r,g,b]
 
-# returns pixels as (r,g,b) tuples
+# returns pixels as [r,g,b] array
 # in a 56x56 array:
-# pixels[row][col] = (r,g,b)
+# pixels[row][col] = [r,g,b]
 # tested to take about 30 seconds for this canvas size
 def loadCanvas(address):
     args = []
