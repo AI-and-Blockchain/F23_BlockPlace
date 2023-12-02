@@ -23,6 +23,13 @@ body {
   margin: 0 auto;
 }
 
+.prompt {
+  font-size: 18px;
+  color: #333;
+  margin: 0 auto;
+  font-weight: bold;
+}
+
 .pixel {
   width: 10px;
   height: 10px;
