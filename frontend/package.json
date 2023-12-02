@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "npx parcel build index.html",
+    "build": "rm -r dist && rm -r .parcle-cache && npx parcel build index.html",
     "start": "npm run build && npx http-server dist"
   },
   "keywords": [],
