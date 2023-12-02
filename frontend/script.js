@@ -144,16 +144,14 @@ function placeBid() {
 let timerDuration = 15*60;
 let timerInterval;
 
-function endOfTimer() {
-  setTimeout(async () => {
-    // update the current canvas
-    let newAddress = await canvasFactoryContract.canvas();
-    if (newAddress !== canvasAddress) {
-      previousCanvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
-      canvasAddress = newAddress;
-      window.canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
-    }
-  }, 5000)
+async function endOfTimer() {
+  // update the current canvas
+  let newAddress = await canvasFactoryContract.canvas();
+  if (newAddress !== canvasAddress) {
+    previousCanvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+    canvasAddress = newAddress;
+    window.canvasContract = new ethers.Contract(canvasAddress, canvasABI, signer);
+  }
 }
 
 function startTimer() {
