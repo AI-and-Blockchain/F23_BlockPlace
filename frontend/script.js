@@ -7,6 +7,8 @@ const canvasABI = require('./ContractABI/CanvasABI.json');
 const blockPlaceTokenABI = require('./ContractABI/BlockPlaceTokenABI.json');
 const { info } = require('ethers/errors');
 
+const backendAddress = 'http://143.198.233.181'
+
 const canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB';
 
 let canvasContract;
@@ -160,33 +162,20 @@ function startTimer() {
   }, 1000);
 }
 
-function endGame(canvasAddr){
-  const url = 'http://127.0.0.1:5000/time'
-  const payload = {
-    canvasAddress: canvasAddress
-  };
-  fetch(url,{
-    method: 'POST',
-    headers: {
-      'Content-Type' : 'application/json'
-    },
-    body:JSON.stringify(payload)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data && data.score !== undefined) {
-      alert('Score: ' + data.score);
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+async function checkTimer(){
+  const url = backendAddress + '/time'
+
+  const req = await fetch(url)
+  const data = await req.json()
+
+  timerDuration = data.time
+  console.log(timerDuration)
 }
 
 // Function to fetch and update the prompt
 async function updatePrompt() {
   try {
-    const response = await fetch('http://127.0.0.1:5000/prompt');
+    const response = await fetch(backendAddress + '/prompt');
     const data = await response.json();
     console.log('data:', data);
     document.getElementById('prompt').textContent =  `Prompt: ${data.prompt}`;
@@ -270,3 +259,7 @@ window.claimRewards = async () => {
     }
   }
 };
+
+checkTimer()
+
+setInterval(checkTimer, 10000)

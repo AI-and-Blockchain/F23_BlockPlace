@@ -15,7 +15,7 @@ from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 web3 = Web3(Web3.HTTPProvider(load_canvas.RPC_URL))
@@ -85,17 +85,15 @@ def sendScore():
     response.content_type = 'application/json'
     return response
 
-#API from frontend to end the current Canvas
-@app.route("/time", methods=["POST"])
-def TimerEnded():
-    global canvasAddress
-    end(canvasAddress)
+@app.route("/time", methods=["get"])
+def gettime():
+    obj = {
+        "time": secondsLeft
+    }
 
-#API from frontend to end the current Canvas
-@app.route("/time", methods=["POST"])
-def TimerEnded():
-    global canvasAddress
-    end(canvasAddress)
+    response = make_response(json.dumps(obj))
+    response.content_type = 'application/json'
+    return response
 
 #Tasks to do at the end of a canvas game cycle
 def end():
