@@ -10,7 +10,7 @@ from PIL import Image
 import numpy as np
 import load_canvas
 import random 
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, make_response
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
@@ -30,7 +30,7 @@ with open("ContractABI/CanvasFactoryABI.json") as f:
 with open("ContractABI/CanvasABI.json") as f:
     CANVAS_ABI = json.load(f)
 
-canvasFactoryAddress = '0x57eEA7f1CEF7bABA71362A78d8425c81F03AA535'
+canvasFactoryAddress = '0x72569bdAcC7B9FDd5E95D662609Ee380752A4659'
 canvasFactoryContract = web3.eth.contract(address=canvasFactoryAddress, abi=CANVAS_FACTORY_ABI)
 canvasAddress = canvasFactoryContract.functions.canvas().call()
 canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
@@ -60,7 +60,11 @@ def generateImage(canvasAddress):
 @app.route('/prompt', methods=['GET'])
 def sendPrompt():
     global prompt
-    return json.dumps({"prompt": prompt})
+    obj = {"prompt": prompt}
+
+    response = make_response(json.dumps(obj))
+    response.content_type = 'application/json'
+    return response
 
 #send the score to chainlink
 @app.route("/score", methods=["GET"])
@@ -69,9 +73,13 @@ def sendScore():
     global imageLocation
 
     score = Judgement(imageLocation, prompt)
-    return json.dumps({
+    obj = {
         "score": score
-    })
+    }
+
+    response = make_response(json.dumps(obj))
+    response.content_type = 'application/json'
+    return response
 
 #Tasks to do at the end of a canvas game cycle
 def end(canvasAddress):

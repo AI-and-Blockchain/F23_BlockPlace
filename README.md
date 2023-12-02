@@ -36,7 +36,6 @@ The smart contract creates a decentralized bidding system where people can bid o
 
 We use blockchain to assist the system in verifying the correct users to reward at the end of a game cycle.
 
-
 ## Sequence Diagram
 
 <img src="https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/3ab99bf0-4522-4dcf-935b-e024c3943683" width="500" height="500">
@@ -44,3 +43,8 @@ We use blockchain to assist the system in verifying the correct users to reward 
 ## Network Architecture
 <img src="https://github.com/AI-and-Blockchain/F23_BlockPlace/assets/72285616/547ca8af-2cca-455b-ae40-26cfd0ef284f" width="750" height="500">
 
+## Contract Addresses
+
+- CanvasFactory: 0x72569bdAcC7B9FDd5E95D662609Ee380752A4659
+- Canvas: 0xD93Fac334aeC56171a478EFe6DB5E4bcAE3887A7
+- BlockPlaceToken: 0x3dc8dAcdCa7f171B139C455E8eF41CC52C2cfC9d
