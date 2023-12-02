@@ -2,9 +2,9 @@
 pragma solidity =0.8.22;
 
 import "@chainlink/v0.8/ChainlinkClient.sol";
-import "@chainlink/v0.8/ConfirmedOwner.sol";
+import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
-contract APIConsumer is ChainlinkClient, ConfirmedOwner {
+contract APIConsumer is ChainlinkClient, Ownable {
     using Chainlink for Chainlink.Request;
 
     uint256 public score;
@@ -26,7 +26,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     address public chainlinkToken;
     address public chainlinkOracle;
 
-    constructor(address _chainlinkToken, address _chainlinkOracle) ConfirmedOwner(msg.sender) {
+    constructor(address _chainlinkToken, address _chainlinkOracle) Ownable(msg.sender) {
         setChainlinkToken(_chainlinkToken);
         setChainlinkOracle(_chainlinkOracle);
         jobId = "ca98366cc7314957b8c012c72f05aeeb";
@@ -37,7 +37,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
      * Create a Chainlink request to retrieve API response, find the target
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
-    function requestScoreData() public returns (bytes32 requestId) {
+    function requestScoreData() public onlyOwner returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(
             jobId,
             address(this),
@@ -86,6 +86,10 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
      * Allow withdraw of Link tokens from the contract
      */
     function withdrawLink() public onlyOwner {
+        if (chainlinkTokenAddress() == address(0)) {
+            return;
+        }
+
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
         require(
             link.transfer(msg.sender, link.balanceOf(address(this))),

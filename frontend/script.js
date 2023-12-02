@@ -9,7 +9,7 @@ const { info } = require('ethers/errors');
 
 const backendAddress = 'http://143.198.233.181'
 
-const canvasFactoryAddress = '0xd61ad562b298FC3135A8C933C5f44DB3E69CcCBB';
+const canvasFactoryAddress = '0x57Dc56B4a177fd896bC22461D5a9075fCde032E8';
 
 let canvasContract;
 let canvasFactoryContract;

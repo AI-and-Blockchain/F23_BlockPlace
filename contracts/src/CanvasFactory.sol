@@ -28,11 +28,8 @@ contract CanvasFactory is Ownable {
         canvases[address(canvas)] = true;
     }
 
-    function end() public onlyOwner {
-        canvas.end();
-    }
-
     function newCanvas() public onlyOwner {
+        canvas.end();
         // you can only create a new canvas if the previous one has ended
         require(canvas.ended(), "Canvas is not ended");
 
@@ -56,6 +53,10 @@ contract CanvasFactory is Ownable {
     }
 
     function withdrawLink() public onlyOwner {
+        if(chainlinkToken == address(0)) {
+            return;
+        }
+
         canvas.withdrawLink();
         uint256 balance = ERC20(chainlinkToken).balanceOf(address(this));
         ERC20(chainlinkToken).transfer(msg.sender, balance);

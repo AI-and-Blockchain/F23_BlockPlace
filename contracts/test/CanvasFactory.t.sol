@@ -24,15 +24,6 @@ contract CanvasFactoryTest is Test {
     }
 
     function testNewCanvasReverts() public {
-        // it should revert if there is already an active canvas
-        vm.prank(owner);
-        vm.expectRevert();
-        factory.newCanvas();
-
-        // now end the canvas
-        vm.prank(owner);
-        factory.end();
-
         // it should revert if someone else tries to create a new canvas
         vm.prank(user1);
         vm.expectRevert();
@@ -52,7 +43,7 @@ contract CanvasFactoryTest is Test {
 
         // end the canvas
         vm.prank(owner);
-        factory.end();
+        factory.newCanvas();
 
         // the factory should have the balance that the canvas had
         assertEq(address(factory).balance, 3000);
