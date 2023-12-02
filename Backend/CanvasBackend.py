@@ -23,6 +23,9 @@ web3 = Web3(Web3.HTTPProvider(load_canvas.RPC_URL))
 imageLocation = 'CanvasResult.png'
 acceptence_threshold = .3
 
+baseTimer = 15*60
+secondsLeft = baseTimer
+
 with open("ContractABI/CanvasFactoryABI.json") as f:
     CANVAS_FACTORY_ABI = json.load(f)
 
@@ -67,13 +70,6 @@ def sendPrompt():
     response.content_type = 'application/json'
     return response
 
-#flask http request to send updatedCanvasAddress the prompt
-@app.route('/Canvas', methods=['GET'])
-def sendCanvas():
-    global canvasAddress
-    print("Sending Updated Canvas Address")
-    return json.dumps({"CanvasAddress": canvasAddress})
-
 #send the score to chainlink
 @app.route("/score", methods=["GET"])
 def sendScore():
@@ -102,21 +98,17 @@ def TimerEnded():
     end(canvasAddress)
 
 #Tasks to do at the end of a canvas game cycle
-def end(canvasAddress):
+def end():
     global prompt
     global prompts
     global canvasFactoryAddress
+    global canvasAddress
+    global secondsLeft
+    global baseTimer
 
-
-    generateImage(canvasAddress)
-    sendScore()
-    
-    #createCanvas()
-    #sendCanvas()
-    
-    newPrompt = random.choice(prompts)
-    sendPrompt(newPrompt)    
-    prompt = newPrompt
+    createCanvas()
+    prompt = random.choice(prompts)
+    secondsLeft = baseTimer
 
 #start a new Canvas contract
 def createCanvas():
@@ -124,7 +116,7 @@ def createCanvas():
     global canvasAddress
     global canvasContract
 
-    canvasAddress = canvasFactoryContract.functions.end().call()
+    canvasFactoryContract.functions.end().call()
     canvasFactoryContract.functions.newCanvas().call()
     canvasAddress = canvasFactoryContract.functions.canvas().call()
     canvasContract = web3.eth.contract(address=canvasAddress, abi=CANVAS_ABI)
@@ -159,15 +151,21 @@ def Judgement(file_location,prompt):
 def loadImage():
     generateImage(canvasAddress)
 
+def countdown():
+    secondsLeft -= 1
+    if secondsLeft <= 0:
+        end()
+
 #Flask Server
 if __name__ == "CanvasBackend":
     print("Starting Canvas Backend")
 
     scheduler = APScheduler()
     #scheduler.add_job(id = 'Scheduled Task', func=loadImage, trigger="interval", seconds=120)
+    scheduler.add_job(id = 'countdown', func=countdown, trigger="interval", seconds=1)
+
     scheduler.start()
 
     #loadImage()
-    sendPrompt()
 
     app.run(debug = True)   
