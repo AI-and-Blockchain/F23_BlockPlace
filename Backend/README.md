@@ -7,12 +7,12 @@ $ pip install -r requirements.txt
 
 To run the Flask python server, either run this command
 ```shell
-$ flask --app .\Backend\CanvasBackend run 
+$ flask --app .\Backend\CanvasBackend.py run 
 ```
 
 or navigate to the Backend folder and run
 
 ```shell
-$ flask --app CanvasBackend run 
+$ flask --app .\CanvasBackend.py run 
 ```
 
